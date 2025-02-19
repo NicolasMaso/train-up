@@ -32,6 +32,16 @@ This Turborepo has some additional tools already setup for you:
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
 
+To get started:
+- Enable Remote Caching (recommended): pnpm dlx turbo login
+   - Learn more: https://turbo.build/repo/remote-cache
+
+- Run commands with Turborepo:
+   - pnpm run build: Build all apps and packages
+   - pnpm run dev: Develop all apps and packages
+   - pnpm run lint: Lint all apps and packages
+- Run a command twice to hit cache
+
 ### Build
 
 To build all apps and packages, run the following command:
