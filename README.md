@@ -92,3 +92,17 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
 - [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
 - [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+
+
+
+Funcionalidades
+
+1) Cadastrar exercícios (grupo de exercícios, nome, descricao, video/foto, exercicios similares, grupo muscular)
+2) Cadastrar treinos para o aluno (nome, período, frequencia semanal, descricao, dificuldade)
+   - cada exercicio tem series, repeticoes, intervalo, observacoes, carga
+   - cada treino pode ter observacoes
+   - cada sessao de treino o aluno pode por um feedback com observacoes, como se sentiu, intensidade, tempo do treino
+3) Cadastrar aluno
+4) Cadastrar personal
+5) Cadastrar avaliação fisica do aluno (anamnese, dados sobre peso, pessoais, etc..)
+6) Cadastrar finanças do aluno, qual valor do plano, tempo de duração, quando pagou, etc

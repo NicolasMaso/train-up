@@ -31,27 +31,59 @@ model Goal {
 }
 
 model Workout {
+  id             String           @id @default(uuid())
+  title          String
+  description    String?
+  startDate      DateTime
+  endDate        DateTime?
+  frequency      Int?
+  level          WorkoutLevel?
+  User           User?            @relation(fields: [userId], references: [id])
+  userId         String?
+  WorkoutSession WorkoutSession[]
+}
+
+model WorkoutSession {
+  id        String                   @id @default(uuid())
+  date      DateTime
+  duration  Int
+  feedback  String?
+  intensity WorkoutSessionIntensity
+  Workout   Workout                  @relation(fields: [workoutId], references: [id])
+  workoutId String
+  exercises WorkoutSessionExercise[]
+}
+
+model WorkoutSessionExercise {
+  id               String         @id @default(uuid())
+  exercise         Exercise       @relation(fields: [exerciseId], references: [id])
+  sets             Int
+  reps             Int
+  weight           Float?
+  restTime         Int?
+  description      String?
+  WorkoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id])
+  workoutSessionId String
+  exerciseId       String
+}
+
+model ExerciseGroup {
   id          String     @id @default(uuid())
   title       String
   description String?
-  startDate   DateTime
-  endDate     DateTime?
   exercises   Exercise[]
-  User        User?      @relation(fields: [userId], references: [id])
-  userId      String?
 }
 
 model Exercise {
-  id          String       @id @default(uuid())
-  title       String
-  description String?
-  sets        Int
-  reps        Int
-  weight      Float?
-  resistance  Float?
-  type        ExerciseType
-  Workout     Workout?     @relation(fields: [workoutId], references: [id])
-  workoutId   String?
+  id                     String                   @id @default(uuid())
+  title                  String
+  description            String?
+  image                  String?
+  video                  String?
+  type                   ExerciseType
+  ExerciseGroup          ExerciseGroup?           @relation(fields: [exerciseGroupId], references: [id])
+  exerciseGroupId        String?
+  WorkoutSessionExercise WorkoutSessionExercise[]
 }
 
 enum ExerciseType {
@@ -65,4 +97,16 @@ enum Role {
   ADMIN
   STUDENT
   PERSONAL
+}
+
+enum WorkoutLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum WorkoutSessionIntensity {
+  LOW
+  MEDIUM
+  HIGH
 }
