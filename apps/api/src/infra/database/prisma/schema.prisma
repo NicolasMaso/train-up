@@ -8,16 +8,19 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  email    String    @unique
-  name     String?
-  age      Int?
-  weight   Float?
-  height   Float?
-  goals    Goal[]
-  workouts Workout[]
-  avatar   String?
-  role     Role      @default(STUDENT)
+  id                 String               @id @default(uuid())
+  email              String               @unique
+  password           String
+  name               String?
+  age                Int?
+  weight             Float?
+  height             Float?
+  goals              Goal[]
+  workouts           Workout[]
+  avatar             String?
+  role               Role                 @default(STUDENT)
+  PhysicalAssessment PhysicalAssessment[]
+  Subscription       Subscription[]
 }
 
 model Goal {
@@ -31,16 +34,17 @@ model Goal {
 }
 
 model Workout {
-  id             String           @id @default(uuid())
+  id             String                @id @default(uuid())
   title          String
   description    String?
   startDate      DateTime
   endDate        DateTime?
   frequency      Int?
   level          WorkoutLevel?
-  User           User?            @relation(fields: [userId], references: [id])
+  User           User?                 @relation(fields: [userId], references: [id])
   userId         String?
   WorkoutSession WorkoutSession[]
+  planExercises  WorkoutPlanExercise[]
 }
 
 model WorkoutSession {
@@ -81,9 +85,13 @@ model Exercise {
   image                  String?
   video                  String?
   type                   ExerciseType
+  muscleGroup            MuscleGroup?
   ExerciseGroup          ExerciseGroup?           @relation(fields: [exerciseGroupId], references: [id])
   exerciseGroupId        String?
   WorkoutSessionExercise WorkoutSessionExercise[]
+  similarExercises       Exercise[]               @relation("SimilarExercises")
+  referencedByExercises  Exercise[]               @relation("SimilarExercises")
+  workoutPlanExercises   WorkoutPlanExercise[]
 }
 
 enum ExerciseType {
@@ -91,6 +99,24 @@ enum ExerciseType {
   LOWER_BODY
   CORE
   CARDIO
+}
+
+enum MuscleGroup {
+  CHEST
+  BACK
+  LEGS
+  SHOULDERS
+  BICEPS
+  TRICEPS
+  ABDOMINALS
+  GLUTES
+  HAMSTRINGS
+  QUADS
+  CALVES
+  FOREARMS
+  TRAPS
+  LATS
+  OTHER
 }
 
 enum Role {
@@ -109,4 +135,72 @@ enum WorkoutSessionIntensity {
   LOW
   MEDIUM
   HIGH
+}
+
+model PhysicalAssessment {
+  id                String   @id @default(uuid())
+  date              DateTime @default(now())
+  weightKg          Float?
+  heightCm          Float?
+  bodyFatPercentage Float?
+  waistCm           Float?
+  hipCm             Float?
+  chestCm           Float?
+  armLeftCm         Float?
+  armRightCm        Float?
+  legLeftCm         Float?
+  legRightCm        Float?
+  anamnesis         String?
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
+}
+
+model Subscription {
+  id            String        @id @default(uuid())
+  planName      String
+  planValue     Float
+  startDate     DateTime
+  endDate       DateTime
+  paymentDate   DateTime?
+  paymentStatus PaymentStatus @default(PENDING)
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELED
+}
+
+model WorkoutPlanExercise {
+  id             String  @id @default(uuid())
+  sets           Int // Prescribed sets
+  reps           Int // Prescribed repetitions
+  targetLoad     Float? // Prescribed load/weight (carga)
+  targetRestTime Int? // Prescribed rest time in seconds (intervalo)
+  notes          String? // Specific notes for this exercise in the plan (observacoes)
+  order          Int // To define the sequence of exercises in the workout plan
+
+  workout    Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  workoutId  String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id]) // Consider onDelete behavior
+  exerciseId String
+  // Optional: @@unique([workoutId, exerciseId, order]) or @@unique([workoutId, exerciseId])
+
+  @@index([workoutId])
+  @@index([exerciseId])
 }
