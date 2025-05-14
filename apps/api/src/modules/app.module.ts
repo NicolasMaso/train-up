@@ -7,6 +7,10 @@ import { ConfigModule } from '@nestjs/config';
 import { WorkoutModule } from './workout/workout.module';
 import { ExerciseGroupModule } from './exercise-group/exercise-group.module';
 import { ExerciseModule } from './exercise/exercise.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -19,8 +23,16 @@ import { ExerciseModule } from './exercise/exercise.module';
     WorkoutModule,
     ExerciseGroupModule,
     ExerciseModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

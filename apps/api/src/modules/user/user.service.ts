@@ -7,14 +7,7 @@ import { PrismaService } from '../../infra/database/prisma/prisma.service';
 import { User, Role } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
-
-export interface CreateUserDto {
-  email: string;
-  password: string;
-  name?: string;
-  role?: Role;
-  // Add other fields as needed from your User model, e.g., age, weight, height
-}
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
