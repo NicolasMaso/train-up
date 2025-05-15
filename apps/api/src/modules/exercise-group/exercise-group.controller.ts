@@ -41,7 +41,7 @@ export class ExerciseGroupController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all exercise groups' })
+  @ApiOperation({ summary: 'Get all exercise groups with optional filters' })
   @ApiQuery({
     name: 'skip',
     required: false,

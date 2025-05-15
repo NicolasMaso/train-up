@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  MaxLength,
+  IsArray,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateExerciseGroupDto {
   @ApiProperty({
@@ -18,4 +25,13 @@ export class CreateExerciseGroupDto {
   @IsString()
   @MaxLength(500) // Example max length
   description?: string;
+
+  @ApiPropertyOptional({
+    description: 'Array of exercise IDs to associate with this group',
+    type: [String],
+  })
+  @IsOptional()
+  @IsArray()
+  @IsUUID('all', { each: true })
+  exerciseIds?: string[];
 }

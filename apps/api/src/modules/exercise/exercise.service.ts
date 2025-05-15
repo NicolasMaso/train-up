@@ -9,11 +9,20 @@ export class ExerciseService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createExerciseDto: CreateExerciseDto): Promise<Exercise> {
-    const { exerciseGroupId, similarExerciseIds, ...exerciseData } =
-      createExerciseDto;
+    const {
+      exerciseGroupId,
+      similarExerciseIds,
+      image,
+      video,
+      muscleGroup,
+      ...exerciseData
+    } = createExerciseDto;
 
     const data: Prisma.ExerciseCreateInput = {
       ...exerciseData,
+      image: image || null, // Garante valores seguros
+      video: video || null, // Garante valores seguros
+      muscleGroup: muscleGroup || null, // Garante valores seguros
     };
 
     if (exerciseGroupId) {

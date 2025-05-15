@@ -11,6 +11,9 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { SubscriptionModule } from './subscription/subscription.module';
+import { WorkoutPlanExerciseModule } from './workout-plan-exercise/workout-plan-exercise.module';
+import { WorkoutSessionModule } from './workout-session/workout-session.module';
 
 @Module({
   imports: [
@@ -25,6 +28,9 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     ExerciseModule,
     UserModule,
     AuthModule,
+    SubscriptionModule,
+    WorkoutPlanExerciseModule,
+    WorkoutSessionModule,
   ],
   controllers: [AppController],
   providers: [

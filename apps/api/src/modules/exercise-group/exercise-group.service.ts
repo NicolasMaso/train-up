@@ -9,8 +9,20 @@ export class ExerciseGroupService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createDto: CreateExerciseGroupDto): Promise<ExerciseGroup> {
+    const { exerciseIds, ...groupData } = createDto;
+
+    const data: Prisma.ExerciseGroupCreateInput = {
+      ...groupData,
+      exercises: exerciseIds
+        ? {
+            connect: exerciseIds.map((id) => ({ id })),
+          }
+        : undefined,
+    };
+
     return this.prisma.exerciseGroup.create({
-      data: createDto,
+      data,
+      include: { exercises: true },
     });
   }
 
@@ -47,10 +59,20 @@ export class ExerciseGroupService {
     id: string,
     updateDto: UpdateExerciseGroupDto,
   ): Promise<ExerciseGroup> {
-    await this.findOne(id); // Ensure group exists before attempting update
+    const { exerciseIds, ...groupData } = updateDto;
+
+    const data: Prisma.ExerciseGroupUpdateInput = {
+      ...groupData,
+      exercises: exerciseIds
+        ? {
+            set: exerciseIds.map((id) => ({ id })),
+          }
+        : undefined,
+    };
+
     return this.prisma.exerciseGroup.update({
       where: { id },
-      data: updateDto,
+      data,
       include: { exercises: true },
     });
   }

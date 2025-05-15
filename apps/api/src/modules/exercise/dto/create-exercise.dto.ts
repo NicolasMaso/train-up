@@ -24,12 +24,12 @@ export class CreateExerciseDto {
   @ApiPropertyOptional({ description: 'URL of an image for the exercise' })
   @IsOptional()
   @IsUrl()
-  image?: string;
+  image?: string; // Alinha com o Prisma
 
   @ApiPropertyOptional({ description: 'URL of a video for the exercise' })
   @IsOptional()
   @IsUrl()
-  video?: string;
+  video?: string; // Alinha com o Prisma
 
   @ApiProperty({ enum: ExerciseType, description: 'Type of exercise' })
   @IsEnum(ExerciseType)
@@ -37,12 +37,12 @@ export class CreateExerciseDto {
   type: ExerciseType;
 
   @ApiPropertyOptional({
-    enum: MuscleGroup,
     description: 'Main muscle group targeted',
+    enum: MuscleGroup,
   })
   @IsOptional()
   @IsEnum(MuscleGroup)
-  muscleGroup?: MuscleGroup;
+  muscleGroup?: MuscleGroup; // Alinha com o Prisma
 
   @ApiPropertyOptional({
     description: 'ID of the exercise group this exercise belongs to',
